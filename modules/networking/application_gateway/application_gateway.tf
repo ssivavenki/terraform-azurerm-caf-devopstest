@@ -68,7 +68,7 @@ resource "azurerm_application_gateway" "agw" {
   }
 
   dynamic "frontend_ip_configuration" {
-    for_each = var.settings.front_end_ip_configurations
+    for_each = var.settings.frontend_ip_configurations
 
     content {
       name                          = frontend_ip_configuration.value.name
@@ -80,7 +80,7 @@ resource "azurerm_application_gateway" "agw" {
   }
 
   dynamic "frontend_port" {
-    for_each = var.settings.front_end_ports
+    for_each = var.settings.frontend_ports
 
     content {
       name = frontend_port.value.name
@@ -93,9 +93,9 @@ resource "azurerm_application_gateway" "agw" {
 
     content {
       name                           = http_listener.value.name
-      frontend_ip_configuration_name = var.settings.front_end_ip_configurations[http_listener.value.front_end_ip_configuration_key].name
-      frontend_port_name             = var.settings.front_end_ports[http_listener.value.front_end_port_key].name
-      protocol                       = var.settings.front_end_ports[http_listener.value.front_end_port_key].protocol
+      frontend_ip_configuration_name = var.settings.frontend_ip_configurations[http_listener.value.front_end_ip_configuration_key].name
+      frontend_port_name             = var.settings.frontend_ports[http_listener.value.front_end_port_key].name
+      protocol                       = var.settings.frontend_ports[http_listener.value.front_end_port_key].protocol
       host_name                      = try(trimsuffix((try(http_listener.value.host_names, null) == null ? try(var.dns_zones[try(http_listener.value.dns_zone.lz_key, var.client_config.landingzone_key)][http_listener.value.dns_zone.key].records[0][http_listener.value.dns_zone.record_type][http_listener.value.dns_zone.record_key].fqdn, http_listener.value.host_name) : null), "."), null)
       host_names                     = try(http_listener.value.host_name, null) == null ? try(http_listener.value.host_names, null) : null
       require_sni                    = try(http_listener.value.require_sni, false)
