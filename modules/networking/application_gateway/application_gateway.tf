@@ -68,7 +68,7 @@ resource "azurerm_application_gateway" "agw" {
   }
 
   dynamic "frontend_ip_configuration" {
-    for_each = var.settings.front_end_ip_configurations
+    for_each = var.settings.frontend_ip_configurations
 
     content {
       name                          = frontend_ip_configuration.value.name
@@ -80,7 +80,7 @@ resource "azurerm_application_gateway" "agw" {
   }
 
   dynamic "frontend_port" {
-    for_each = var.settings.front_end_ports
+    for_each = var.settings.frontend_ports
 
     content {
       name = frontend_port.value.name
